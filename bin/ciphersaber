@@ -79,9 +79,15 @@ if options['encrypt'] == true
     10.times do
         iv << rand(255)
     end
-    File.open(options['input'], 'rb') do |f|
-        f.each_byte do |byte|
+    if options['input'] == '-'
+        $stdin.each_byte do |b|
             file << byte
+        end
+    else
+        File.open(options['input'], 'rb') do |f|
+            f.each_byte do |byte|
+                file << byte
+            end
         end
     end
     r = CipherSaber.new(options['key'] + iv[0..9], options['n'])
