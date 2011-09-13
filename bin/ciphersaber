@@ -5,7 +5,7 @@
 # Doug Prostko 2011
 #
 
-require 'lib/cipher_saber'
+require 'cipher_saber'
 require 'optparse'
 
 options = {}
