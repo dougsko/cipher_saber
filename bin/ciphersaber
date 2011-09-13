@@ -80,7 +80,7 @@ if options['encrypt'] == true
         iv << rand(255)
     end
     if options['input'] == '-'
-        $stdin.each_byte do |b|
+        $stdin.each_byte do |byte|
             file << byte
         end
     else
