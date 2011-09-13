@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+#
+# Cipher Saber 2 implementation in Ruby
+#
+# Doug Prostko 2011
+#
+
+require 'cipher_saber'
+require 'optparse'
+
+options = {}
+opts = OptionParser.new do |opts|
+    opts.banner =  "CipherSaber is an ultra-simple encryption method based on RC4"
+    opts.separator ""
+    opts.separator "Options:"
+
+    opts.on("-i <file>", "--input <file>", String,
+            "Input file, use \"-\" for STDIN") do |i|
+                 options["input"] = i
+            end
+    
+    opts.on("-o <file>", "--output <file>", String,
+            "Output file, use \"-\" for STDOUT") do |o|
+                options["output"] = o
+            end
+    
+    opts.on("-n <number>", "--number <number>", Integer,
+            "Number of times to run mixing function. Use N=1 for CipherSaber 1") do |n|
+                options["n"] = n
+            end
+
+    opts.on("-k <key>", "--key <key>", String,
+            "ASCII passphrase") do |k|
+                options["key"] = k
+            end
+
+    opts.on_tail("-h", "--help", "Show this message") do
+        puts opts
+        exit
+    end
+end
+
+opts.parse(ARGV)
+
+iv = ""
+if options['input'] == '-'
+    $stdin.each_byte do |b|
+        iv << b.chr
+    end
+else
+    File.open(options['input'], 'rb') do |f|
+        f.each_byte do |b|
+            iv << b.chr
+        end
+    end
+end
+
+r = CipherSaber.new(options['key'] + iv[0..9], options['n'])
+d = r.decrypt(iv[10..iv.length])
+
+if options['output'] == '-'
+    $stdout.puts d
+else
+    File.open(options['output'], 'w') do |f|
+        f.puts d
+    end
+end

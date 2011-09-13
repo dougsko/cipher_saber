@@ -1,6 +1,13 @@
 = cipher_saber
 
-Description goes here.
+CipherSaber is an ultra-simple encryption method based on RC4
+
+Options:
+    -i, --input <file>               Input file, use "-" for STDIN
+    -o, --output <file>              Output file, use "-" for STDOUT
+    -n, --number <number>            Number of times to run mixing function. Use N=1 for CipherSaber 1
+    -k, --key <key>                  ASCII passphrase
+    -h, --help                       Show this message
 
 == Contributing to cipher_saber
  
