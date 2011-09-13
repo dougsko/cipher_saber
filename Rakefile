@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "cipher_saber"
   gem.homepage = "http://github.com/dougsko/cipher_saber"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{A ruby implementation of the CipherSaber algorithm.}
+  gem.description = %Q{A ruby implementation of the CipherSaber algorithm.}
   gem.email = "dougtko@gmail.com"
   gem.authors = ["dougsko"]
   # dependencies defined in Gemfile
