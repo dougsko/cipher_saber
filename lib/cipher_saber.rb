@@ -43,6 +43,20 @@ class CipherSaber
         cipher_text
     end
 
+    def gen_random(bytes)
+        i, j, temp = 0, 0, 0
+        random = ""
+        bytes.times do
+            i = (i + 1) % 256
+            j = (j + @s[i]) % 256
+            temp = @s[i]
+            @s[i] = @s[j]
+            @s[j] = temp
+            random << @s[(@s[i] + @s[j]) % 256]
+        end
+        random
+    end
+
     alias :encrypt :decrypt
 end
 

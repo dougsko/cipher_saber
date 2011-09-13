@@ -31,7 +31,7 @@ opts = OptionParser.new do |opts|
 
     opts.on("-k <key>", "--key <key>", String,
             "ASCII passphrase") do |k|
-                options["key"] = k
+                options["key"] = k.gsub(/\s+/,'')
             end
     opts.on("-e", "--encrypt", "Encrypt a file") do
         options['encrypt'] = true
@@ -74,11 +74,12 @@ if options['decrypt'] == true
         end
     end
 end
+
 if options['encrypt'] == true
     file = ""
-    10.times do
-        iv << rand(255)
-    end
+    srand(Time.now.to_i)
+    r = CipherSaber.new(rand.to_s, options['n'])
+    iv = r.gen_random(10)
     if options['input'] == '-'
         $stdin.each_byte do |byte|
             file << byte
