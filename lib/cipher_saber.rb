@@ -9,8 +9,7 @@ class CipherSaber
     def initialize(key, n)
         @key = []
         @s = (0..255).to_a
-        j = 0
-        temp = 0
+        j, temp = 0, 0
 
         key.each_byte do |byte|
             @key << byte
@@ -27,9 +26,7 @@ class CipherSaber
     end
 
     def decrypt(text)
-        i = 0
-        j = 0
-        temp = 0 
+        i, j, temp = 0, 0, 0
         cipher_text = ""
         text.each_byte do |byte|
             i = (i + 1) % 256
