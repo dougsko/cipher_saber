@@ -26,7 +26,7 @@ class CipherSaber
         end
     end
 
-    def encrypt(text)
+    def decrypt(text)
         i = 0
         j = 0
         temp = 0 
@@ -43,6 +43,6 @@ class CipherSaber
         cipher_text
     end
 
-    alias_method :decrypt, :encrypt
+    alias :encrypt :decrypt
 end
 

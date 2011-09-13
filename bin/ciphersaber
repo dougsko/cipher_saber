@@ -5,7 +5,7 @@
 # Doug Prostko 2011
 #
 
-require 'cipher_saber'
+require 'lib/cipher_saber'
 require 'optparse'
 
 options = {}
@@ -33,6 +33,13 @@ opts = OptionParser.new do |opts|
             "ASCII passphrase") do |k|
                 options["key"] = k
             end
+    opts.on("-e", "--encrypt", "Encrypt a file") do
+        options['encrypt'] = true
+    end
+
+    opts.on("-d", "--decrypt", "Decrypt a file") do
+        options['decrypt'] = true
+    end
 
     opts.on_tail("-h", "--help", "Show this message") do
         puts opts
@@ -43,25 +50,47 @@ end
 opts.parse(ARGV)
 
 iv = ""
-if options['input'] == '-'
-    $stdin.each_byte do |b|
-        iv << b.chr
-    end
-else
-    File.open(options['input'], 'rb') do |f|
-        f.each_byte do |b|
+if options['decrypt'] == true
+    if options['input'] == '-'
+        $stdin.each_byte do |b|
             iv << b.chr
+        end
+    else
+        File.open(options['input'], 'rb') do |f|
+            f.each_byte do |b|
+                iv << b.chr
+            end
+        end
+    end
+
+    r = CipherSaber.new(options['key'] + iv[0..9], options['n'])
+    d = r.decrypt(iv[10..iv.length])
+
+    if options['output'] == '-'
+        $stdout.puts d
+    else
+        File.open(options['output'], 'w') do |f|
+            f.puts d
         end
     end
 end
-
-r = CipherSaber.new(options['key'] + iv[0..9], options['n'])
-d = r.decrypt(iv[10..iv.length])
-
-if options['output'] == '-'
-    $stdout.puts d
-else
-    File.open(options['output'], 'w') do |f|
-        f.puts d
+if options['encrypt'] == true
+    file = ""
+    10.times do
+        iv << rand(255)
+    end
+    File.open(options['input'], 'rb') do |f|
+        f.each_byte do |byte|
+            file << byte
+        end
+    end
+    r = CipherSaber.new(options['key'] + iv[0..9], options['n'])
+    e = r.encrypt(file)
+    if options['output'] == '-'
+        $stdout.puts d
+    else
+        File.open(options['output'], 'w') do |f|
+            f.puts iv + e
+        end
     end
 end
